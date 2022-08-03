@@ -1,17 +1,20 @@
 # Python_Banking_Simulator
 
+
 ### What is this project?
 
 This project is simple simulation of normal bank operations like:
 - withdraw
 - remittance
 - exchange
-Futhermore i would like to store all data in Database.
-Maybe i will add some small gui for this projects idk.
+- Account login / logout
 
 ### How it works?
 
-...
+User starts code. Script downloads data from database. 
+User can login then make operations.
+Transactions are ACID.
+Everything will be based on Objects
 
 
 ### Most important Classes and their meaning in game
