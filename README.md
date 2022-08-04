@@ -17,6 +17,11 @@ Transactions are ACID.
 Everything will be based on Objects
 
 
+### Database
+
+Project connects to PostgreSQL database in order to transfer and save data.
+
+
 ### Most important Classes and their meaning in game
 
 - ...
