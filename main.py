@@ -4,31 +4,50 @@ import os
 
 from user_operations.user import Session
 from user_operations.user import User
+from user_operations.user import Authorization
 
 
 class DatabaseOperator():
 
     def __init__(self):
         self.database_name = "bank_db"
-        self.cursor = self.setup_connection()
+        self.connection = self.setup_connection()
+        self.cursor = self.setup_cursor()
+
+
+    def __del__(self):
+
+        self.connection.close()
 
     def setup_connection(self):
-        connection = sqlite3.connect('bank_db')
-        cursor = connection.cursor()
+
+        connection = None
+
+        try:
+            connection = sqlite3.connect('bank_db.db')
+        except:
+            print("Database connection error")
+
+        return connection
+
+    def setup_cursor(self):
+
+        cursor = self.connection.cursor()
 
         return cursor
 
     def save_instance(self):
         pass
 
-    def load_data(self, table_name):
-        self.cursor.execute(f"SELECT * FROM {table_name}")
+    def load_data(self,table_name):
+        query = f"SELECT * from {table_name}"
+        self.cursor.execute(query)
         results = self.cursor.fetchall()
 
         return results
 
 
-class Window():
+class Menu():
 
     def __init__(self) -> None:
         self.logo = """                             .7GB55BG7.                                                  
@@ -40,18 +59,18 @@ class Window():
                                  ^GGPPPPPPPPPPP55555PPPP55PPP55PPP5PPGP5PPGG^                                 
                                     :::::.     :::::.  .::. .::. :::: .:::                                    
                                    ^@@@@@@&?  ^@@@@@Y  #@@G Y@@5 &@@& B@@G                                    
-                                   ~@@@5J@@@. J@@@@@#  #@@@^J@@5 &@@&!@@@.                                    
-                                   ~@@@J~@@@: B@@B@@@. #@@@#5@@5 &@@&&@@Y                                     
-                                   ~@@@@@@@?  &@@7&@@~ #@@@@@@@5 &@@@@@@.                                     
-                                   ~@@@G5@@@^.@@@:B@@5 #@@&@@@@5 &@@@@@@?                                     
-                                   ~@@@7:@@@?!@@@@@@@& #@@?&@@@5 &@@&G@@@                                     
-                                   ~@@@BG@@@?P@@@P#@@@:#@@~?@@@5 &@@&~@@@Y                                    
+                                   ~@@@..@@@. J@@@@@#  #@@@^J@@5 &@@& @@@.                                    
+                                   ~@@@..@@@: B@@B.@@. #@@@#5@@5 &@@&&@@Y                                     
+                                   ~@@@@@@@?  &@@..@@~ #@@@@@@@5 &@@@@@@.                                     
+                                   ~@@@G5@@@^.@@@`.@@5 #@@&@@@@5 &@@@@@@?                                     
+                                   ~@@@..@@@?!@@@@@@@& #@@?&@@@5 &@@&G@@@                                     
+                                   ~@@@..@@@?P@@@P#@@@:#@@~?@@@5 &@@& @@@Y                                    
                                    ^@@@@@@&G.#@@& ~@@@!G@@^ &@@Y #@@# B@@&                                    
                                   ..:::::....:::...:::..::...::...::...:::..                                  
                                  ^GPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPG^                                 
                                ?PP555555555555555555555555555555555555555555PP?                               
                             ~JJ555555555555555555555555555555555555555555555555JJ^                            
-                          ^^J55YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY55?^^\n\n\n"""
+                          ^^J55YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY55?^^"""
 
     @staticmethod
     def clear_window():
@@ -75,17 +94,52 @@ class Window():
         print("3 - Logout")
         user_choice = input()
 
+    def print_prelogin_menu(self):
+
+        self.clear_window()
+
+        print(self.logo)
+
+        print("\n Welcome, what do you want to do?")
+        print("\n 1 - Login")
+        print("\n 2 - Register")
+
+    def login_menu(self):
+
+        self.clear_window()
+
+        print(self.logo)
+
+        input_username = input("\n Username:")
+        input_password = input("\n Password:")
+
+        return input_username, input_password
+
 
 class Main():
 
-    transactions=DatabaseOperator.load_data("Transaction")
-    users=DatabaseOperator.load_data("Users")
-    wallets=DatabaseOperator.load_data("Wallets")
+    def __init__(self) -> None:
+        self.database_operator=DatabaseOperator()
+        self.transactions = self.database_operator.load_data("Transactions")
+        self.users = self.database_operator.load_data("Users")
+        self.wallets = self.database_operator.load_data("Wallets")
+        self.main_session = Session()
+        self.main_menu = Menu()
 
-    # user_class = User()
-    # user_session = Session()
+        self.main_auth = Authorization(self.users)
 
-    def main_loop():
+    def main_loop(self):
 
-        if Session.is_logged_in():
-            Window.print_menu()
+        if self.main_session.is_logged_in():
+            self.main_menu.print_menu()
+        else:
+            user_inputs = self.main_menu.login_menu()
+            login_result = self.main_auth.login(user_inputs)
+
+            if not login_result:
+                self.main_loop()
+
+
+if __name__ == '__main__':
+    main = Main()
+    main.main_loop()

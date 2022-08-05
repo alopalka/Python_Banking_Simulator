@@ -15,7 +15,16 @@ class Session():
 
 
 class Authorization():
-    pass
+
+    def __init__(self,users):
+        self.users = users
+
+    def login(self,username,password):
+        
+        return False
+
+    def register(self,username,password,first_name,last_name):
+        pass
 
 
 class User():
