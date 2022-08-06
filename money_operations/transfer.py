@@ -15,5 +15,9 @@ class Transaction():
 
         recipent_id=recipent_user[5]
 
-        
+        cell_name=['id','currency','wallet_from_id','wallet_to_id','amount']
+
+        values=[1,self.currency,self.wallet_from_id,recipent_id,self.amount]
+
+        db_operator.write_data("Transactions",cell_name,values)
 

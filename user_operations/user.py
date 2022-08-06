@@ -54,7 +54,7 @@ class Authorization():
             exact_user = self.users[result]
 
             session.user = User(
-                exact_user[0], exact_user[1], exact_user[2], exact_user[3], exact_user[4])
+                exact_user[0], exact_user[1], exact_user[2], exact_user[3], exact_user[4], exact_user[5])
 
             wallet_id = exact_user[5]
             wallet = db_operator.find_match("Wallets", "id", wallet_id)
@@ -71,12 +71,13 @@ class Authorization():
 
 class User():
 
-    def __init__(self, id, username, password, first_name, last_name):
+    def __init__(self, id, username, password, first_name, last_name, wallet_id):
         self.id = id
         self.username = username
         self.password = password
         self.first_name = first_name
         self.last_name = last_name
+        self.wallet_id = wallet_id
 
     def __str__(self):
 
