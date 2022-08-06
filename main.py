@@ -46,9 +46,9 @@ class DatabaseOperator():
 
         return results
 
-    def find_match(self, table_name, matching_value, searched_phrase):
+    def find_match(self, table_name, matching_cell, searched_phrase):
 
-        query = f"SELECT * from {table_name} WHERE {matching_value} = '{searched_phrase}'"
+        query = f"SELECT * from {table_name} WHERE {matching_cell} = '{searched_phrase}'"
 
         self.cursor.execute(query)
 
@@ -56,7 +56,7 @@ class DatabaseOperator():
 
         return result
 
-    def write_data(self,table_name,cell_name,values):
+    def write_data(self, table_name, cell_name, values):
 
         query = f"INSERT INTO {table_name} {*cell_name,} VALUES {*values,}"
 
@@ -64,9 +64,13 @@ class DatabaseOperator():
 
         self.connection.commit()
 
-    def update_data():
-        pass
+    def update_data_one_item(self, table_name, cell_value, value, matching_cell, matching_value):
 
+        query = f"UPDATE {table_name} SET {cell_value} = '{value}' WHERE {matching_cell} = '{matching_value}'"
+
+        self.cursor.execute(query)
+
+        self.connection.commit()
 
 
 class Main():
@@ -85,7 +89,7 @@ class Main():
     def main_loop(self):
 
         if self.main_session.is_logged_in():
-            self.main_menu.print_menu(self.main_session,self.db_operator)
+            self.main_menu.print_menu(self.main_session, self.db_operator)
         else:
             user_inputs = self.main_menu.login_menu()
 

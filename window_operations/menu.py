@@ -3,6 +3,7 @@ import os
 
 from money_operations.transfer import Transaction
 
+
 class Menu():
 
     def __init__(self) -> None:
@@ -50,9 +51,11 @@ class Menu():
         user_amount = input("How much do you want to transfer? (Amount)")
         user_recipient = input("Recipient username: ")
 
-        current_transaction=Transaction(currency=user_currency,wallet_from_id=session.user.wallet_id,amount=user_amount)
+        current_transaction = Transaction(
+            currency=user_currency, wallet_from_id=session.user.wallet_id, amount=user_amount)
 
-        current_transaction.make_transaction(session,db_operator,user_recipient)
+        current_transaction.make_transaction(
+            session, db_operator, user_recipient)
 
     def account_details(self, session):
         self.print_upper_section()
@@ -70,7 +73,7 @@ class Menu():
         session.user = ""
         session.logged_in = False
 
-    def print_menu(self, session,db_operator):
+    def print_menu(self, session, db_operator):
 
         is_true = True
 
@@ -87,7 +90,7 @@ class Menu():
             user_choice = str(input())
 
             if user_choice == "1":
-                self.send_money(session,db_operator)
+                self.send_money(session, db_operator)
             elif user_choice == "2":
                 self.exchange_money()
             elif user_choice == "3":
