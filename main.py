@@ -46,6 +46,15 @@ class DatabaseOperator():
 
         return results
 
+    def find_match(self, table_name, matching_value, searched_phrase):
+
+        query = f"SELECT * from {table_name} WHERE {matching_value} = {searched_phrase}"
+        self.cursor.execute(query)
+
+        result = self.cursor.fetchone()
+
+        return result
+
 
 class Main():
 
@@ -68,7 +77,7 @@ class Main():
             user_inputs = self.main_menu.login_menu()
 
             self.main_auth.login(
-                user_inputs[0], user_inputs[1], self.main_session)
+                user_inputs[0], user_inputs[1], self.main_session, self.database_operator)
 
         self.main_loop()
 

@@ -1,6 +1,7 @@
 import platform
 import os
 
+
 class Menu():
 
     def __init__(self) -> None:
@@ -42,7 +43,7 @@ class Menu():
 
         print("How ")
 
-    def account_details(self,session):
+    def account_details(self, session):
         self.clear_window()
 
         print(self.logo)
@@ -50,20 +51,24 @@ class Menu():
         print(f"First name: {session.user.first_name}")
         print(f"Last name: {session.user.last_name}")
         print(f"Username: {session.user.username}")
+        print("\n ============================== \n Balance \n ============================== \n")
+        print(f" USD : {session.wallet.amount_usd}")
+        print(f" PLN : {session.wallet.amount_pln}")
+        print(f" EUR : {session.wallet.amount_eur}")
+        print(f" BTC : {session.wallet.amount_btc}")
 
         input("Press any key to continue...")
-
 
     def exchange_money(self):
         pass
 
-    def logout(self,session):
-        session.user=""
-        session.logged_in=False
+    def logout(self, session):
+        session.user = ""
+        session.logged_in = False
 
-    def print_menu(self,session):
+    def print_menu(self, session):
 
-        is_true=True
+        is_true = True
 
         while(is_true):
 
@@ -87,9 +92,7 @@ class Menu():
                 self.account_details(session)
             elif user_choice == "4":
                 self.logout(session)
-                is_true=False
-            
-        
+                is_true = False
 
     def print_prelogin_menu(self):
 

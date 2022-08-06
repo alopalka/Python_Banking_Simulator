@@ -1,10 +1,12 @@
+from money_operations.wallet import Wallet
 
 
 class Session():
 
-    def __init__(self, user=None, logged_in=False):
+    def __init__(self, user=None, logged_in=False, wallet=None):
         self.user = user
         self.logged_in = logged_in
+        self.wallet = wallet
 
     def is_logged_in(self):
 
@@ -43,16 +45,23 @@ class Authorization():
         except:
             return False
 
-    def login(self, username, password, session):
+    def login(self, username, password, session, database_operator):
 
         result = self.user_existance(username, password)
-
 
         if result is not False:
             session.logged_in = True
             exact_user = self.users[result]
 
-            session.user = User(exact_user[0],exact_user[1],exact_user[2],exact_user[3],exact_user[4])
+            session.user = User(
+                exact_user[0], exact_user[1], exact_user[2], exact_user[3], exact_user[4])
+
+            wallet_id = exact_user[5]
+            wallet = database_operator.find_match("Wallets", "id", wallet_id)
+
+            session.wallet = Wallet(
+                wallet[0], wallet[1], wallet[2], wallet[3], wallet[4])
+
         else:
             return False
 
