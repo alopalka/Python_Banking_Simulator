@@ -42,14 +42,12 @@ class Menu():
         print(self.logo)
         print("\n\n")
 
-    def send_money_menu(self):
+    def send_money(self, session, db_operator):
         self.print_upper_section()
 
         user_currency = input("Which currency do you choose? (Currency)")
         user_amount = input("How much do you want to transfer? (Amount)")
         user_recipient = input("Recipient username: ")
-
-        
 
     def account_details(self, session):
         self.print_upper_section()

@@ -45,7 +45,7 @@ class Authorization():
         except:
             return False
 
-    def login(self, username, password, session, database_operator):
+    def login(self, username, password, session, db_operator):
 
         result = self.user_existance(username, password)
 
@@ -57,7 +57,7 @@ class Authorization():
                 exact_user[0], exact_user[1], exact_user[2], exact_user[3], exact_user[4])
 
             wallet_id = exact_user[5]
-            wallet = database_operator.find_match("Wallets", "id", wallet_id)
+            wallet = db_operator.find_match("Wallets", "id", wallet_id)
 
             session.wallet = Wallet(
                 wallet[0], wallet[1], wallet[2], wallet[3], wallet[4])
