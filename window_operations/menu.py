@@ -36,28 +36,29 @@ class Menu():
         else:
             os.system('cls')
 
-    def send_money_menu(self):
+    def print_upper_section(self):
         self.clear_window()
 
         print(self.logo)
+        print("\n\n")
 
-        print("How ")
+    def send_money_menu(self):
+        self.print_upper_section()
+
+        user_currency = input("Which currency do you choose? (Currency)")
+        user_amount = input("How much do you want to transfer? (Amount)")
+        user_recipient = input("Recipient username: ")
+
+        
 
     def account_details(self, session):
-        self.clear_window()
+        self.print_upper_section()
 
-        print(self.logo)
-
-        print(f"First name: {session.user.first_name}")
-        print(f"Last name: {session.user.last_name}")
-        print(f"Username: {session.user.username}")
+        print(session.user)
         print("\n ============================== \n Balance \n ============================== \n")
-        print(f" USD : {session.wallet.amount_usd}")
-        print(f" PLN : {session.wallet.amount_pln}")
-        print(f" EUR : {session.wallet.amount_eur}")
-        print(f" BTC : {session.wallet.amount_btc}")
+        print(session.wallet)
 
-        input("Press any key to continue...")
+        input("\n Press any key to continue...")
 
     def exchange_money(self):
         pass
@@ -72,16 +73,14 @@ class Menu():
 
         while(is_true):
 
-            self.clear_window()
+            self.print_upper_section()
 
-            print(self.logo)
-
-            print(f"Welcome back, {session.user.first_name}\n")
-            print("What do you want to do today?")
-            print("1 - Send money")
-            print("2 - Exchange")
-            print("3 - Account details")
-            print("4 - Logout")
+            print(f" Welcome back, {session.user.first_name}\n")
+            print(" What do you want to do today?")
+            print(" 1 - Send money")
+            print(" 2 - Exchange")
+            print(" 3 - Account details")
+            print(" 4 - Logout")
             user_choice = str(input())
 
             if user_choice == "1":
@@ -96,9 +95,7 @@ class Menu():
 
     def print_prelogin_menu(self):
 
-        self.clear_window()
-
-        print(self.logo)
+        self.print_upper_section()
 
         print("\n Welcome, what do you want to do?")
         print("\n 1 - Login")
@@ -106,9 +103,7 @@ class Menu():
 
     def login_menu(self):
 
-        self.clear_window()
-
-        print(self.logo)
+        self.print_upper_section()
 
         input_username = input("\n Username:")
         input_password = input("\n Password:")

@@ -10,4 +10,5 @@ class Wallet():
         self.amount_btc = amount_btc
 
     def __str__(self):
-        return f"{self.id} BTC: {self.amount_btc} USD: {self.amount_usd}"
+
+        return f" USD : {self.amount_usd}\n" + f" PLN : {self.amount_pln}\n" + f" EUR : {self.amount_eur}\n" + f" BTC : {self.amount_btc}\n"

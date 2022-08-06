@@ -79,4 +79,5 @@ class User():
         self.last_name = last_name
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} - {self.username}"
+
+        return f" First name: {self.first_name}\n" + f" Last name: {self.last_name}\n" + f" Username: {self.username}\n"
