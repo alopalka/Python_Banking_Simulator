@@ -73,6 +73,18 @@ class DatabaseOperator():
         self.connection.commit()
 
 
+    def find_newest(self,cell_name,table_name):
+
+        query = f"SELECT MAX({cell_name}) FROM {table_name}"
+
+
+        self.cursor.execute(query)
+
+        result = self.cursor.fetchone()
+
+        return result
+
+
 class Main():
 
     def __init__(self) -> None:
