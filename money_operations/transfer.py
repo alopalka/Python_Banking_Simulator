@@ -1,3 +1,4 @@
+from money_operations.wallet import Wallet
 
 
 class Transaction():
@@ -11,7 +12,8 @@ class Transaction():
 
     def find_newest_transaction(self, db_operator):
 
-        highest_transaction_id = db_operator.find_newest(cell_name="id",table_name="Transactions")[0]
+        highest_transaction_id = db_operator.find_newest(
+            cell_name="id", table_name="Transactions")[0]
 
         return highest_transaction_id
 
@@ -45,12 +47,20 @@ class Transaction():
         elif selected_currency == "amount_btc":
             wallet_cell_id = "4"
 
-        recipent_new_amount = recipent_wallet[int(wallet_cell_id)] + float(self.amount)
+        recipent_new_amount = recipent_wallet[int(
+            wallet_cell_id)] + float(self.amount)
 
         db_operator.update_data_one_item(
             "Wallets", selected_currency, recipent_new_amount, "id", recipent_id)
 
-        sender_new_amount = getattr(session.wallet, selected_currency) - self.amount
+        sender_new_amount = getattr(
+            session.wallet, selected_currency) - self.amount
 
         db_operator.update_data_one_item(
             "Wallets", selected_currency, sender_new_amount, "id", session.user.id)
+
+        refreshed_wallet = db_operator.find_match(
+            "Wallets", "id", session.user.id)
+
+        session.wallet = Wallet(
+            refreshed_wallet[0], refreshed_wallet[1], refreshed_wallet[2], refreshed_wallet[3], refreshed_wallet[4])

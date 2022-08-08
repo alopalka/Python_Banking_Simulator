@@ -38,6 +38,8 @@ class Authorization():
             user_index = key_list.index(username)
             password_index = values_list.index(password)
 
+            breakpoint()
+
             if user_index == password_index:
                 return user_index
             else:

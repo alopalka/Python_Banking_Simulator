@@ -70,8 +70,9 @@ class Menu():
         pass
 
     def logout(self, session):
-        session.user = ""
+        session.user = None
         session.logged_in = False
+        session.wallet = None
 
     def print_menu(self, session, db_operator):
 
