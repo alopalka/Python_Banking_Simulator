@@ -28,13 +28,13 @@ class Transaction():
 
         recipent_wallet = db_operator.find_match("Wallets", "id", recipent_id)
 
-        cell_name = ['id', 'currency',
-                     'wallet_from_id', 'wallet_to_id', 'amount']
+        cell_names = ['id', 'currency',
+                      'wallet_from_id', 'wallet_to_id', 'amount']
 
         values = [highest_transaction_id+1, self.currency, self.wallet_from_id,
                   recipent_id, self.amount]
 
-        db_operator.write_data("Transactions", cell_name, values)
+        db_operator.write_data("Transactions", cell_names, values)
 
         selected_currency = f"amount_{self.currency.lower()}"
 

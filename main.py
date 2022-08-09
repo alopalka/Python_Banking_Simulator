@@ -23,12 +23,23 @@ class Main():
         if self.main_session.is_logged_in():
             self.main_menu.print_menu(self.main_session, self.db_operator)
         else:
-            user_inputs = self.main_menu.login_menu()
+            prelogin_input = self.main_menu.print_prelogin_menu()
 
-            self.main_auth.login(
-                user_inputs[0], user_inputs[1], self.main_session, self.db_operator)
+            if prelogin_input == 1:
 
-        self.main_loop()
+                user_inputs = self.main_menu.login_menu()
+
+                self.main_auth.login(
+                    user_inputs[0], user_inputs[1], self.main_session, self.db_operator)
+            else:
+
+                user_inputs = self.main_menu.register_menu()
+
+                self.main_auth.register(
+                    user_inputs[0], user_inputs[1], user_inputs[2], user_inputs[3], self.main_session, self.db_operator
+                )
+
+            self.main_loop()
 
 
 if __name__ == '__main__':

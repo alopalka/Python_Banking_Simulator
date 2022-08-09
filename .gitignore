@@ -1,5 +1,6 @@
 bank_db.*
 bank_dbn
+secrets.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

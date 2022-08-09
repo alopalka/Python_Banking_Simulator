@@ -108,11 +108,30 @@ class Menu():
         print("\n 1 - Login")
         print("\n 2 - Register")
 
+        input_user_choice = input("Choice:")
+
+        return input_user_choice
+
     def login_menu(self):
 
         self.print_upper_section()
+
+        print("\n\n LOGIN \n\n")
 
         input_username = input("\n Username:")
         input_password = input("\n Password:")
 
         return [input_username, input_password]
+
+    def register_menu(self):
+
+        self.print_upper_section()
+
+        print("\n\n REGISTER \n\n")
+
+        input_username = input("\n Username:")
+        input_password = input("\n Password:")
+        input_first_name = input("\n First name:")
+        input_last_name = input("\n Last name:")
+
+        return [input_username, input_password, input_first_name, input_last_name]
