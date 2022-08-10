@@ -44,8 +44,6 @@ class DatabaseOperator():
     def write_data(self, table_name, cell_name, values):
         query = f"INSERT INTO {table_name} {*cell_name,} VALUES {*values,}"
 
-        breakpoint()
-
         self.cursor.execute(query)
         self.connection.commit()
 

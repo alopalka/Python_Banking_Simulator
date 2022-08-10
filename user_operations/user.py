@@ -97,13 +97,11 @@ class Authorization():
                 db_operator.find_newest("id", "Users")[0])+1
 
             decoded_password=password.decode()
-
             current_user = User(highest_user_id, username,
                                 decoded_password, first_name, last_name, highest_user_id)
             current_user.create_empty(db_operator)
 
             session.user = current_user
-
             session.logged_in = True
 
         else:
