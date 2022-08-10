@@ -66,8 +66,34 @@ class Menu():
 
         input("\n Press any key to continue...")
 
-    def exchange_money(self):
-        pass
+    def exchange_money(self, session, db_operator):
+
+        self.print_upper_section()
+
+        print("\n Current prices:")
+        print("\n USD/PLN - ")
+        print("\n EUR/PLN - ")
+        print("\n BTC/PLN - ")
+
+        user_from_currency = input(
+            "Which currency do you want to exchange? (Currency FROM): ")
+        user_to_currency = input(
+            "Currency you want to receive? (Currency TO): ")
+        user_amount_from = input(
+            "What amount of your FROM currency do you want to exchange?: ")
+
+        calculated_amount_to_give = 0
+
+        giving_transaction = Transaction(
+            currency=user_to_currency, wallet_from_id=session.user.wallet_id, amount=calculated_amount_to_give)
+        giving_transaction.make_transaction(
+            session, db_operator, session.user.username)
+
+        taking_transaction = Transaction(
+            currency=user_from_currency, wallet_from_id=session.user.wallet_id, amount=user_amount_from)
+        taking_transaction.make_transaction(
+            session, db_operator, session.user.username)
+
 
     def logout(self, session):
         session.user = None
@@ -88,12 +114,12 @@ class Menu():
             print(" 2 - Exchange")
             print(" 3 - Account details")
             print(" 4 - Logout")
-            user_choice = str(input())
+            user_choice = str(input("\n Choise: "))
 
             if user_choice == "1":
                 self.send_money(session, db_operator)
             elif user_choice == "2":
-                self.exchange_money()
+                self.exchange_money(session, db_operator)
             elif user_choice == "3":
                 self.account_details(session)
             elif user_choice == "4":
@@ -108,7 +134,7 @@ class Menu():
         print("\n 1 - Login")
         print("\n 2 - Register")
 
-        input_user_choice = input("Choice:")
+        input_user_choice = input("\n Choice: ")
 
         return input_user_choice
 
@@ -118,8 +144,8 @@ class Menu():
 
         print("\n\n LOGIN \n\n")
 
-        input_username = input("\n Username:")
-        input_password = input("\n Password:")
+        input_username = input("\n Username: ")
+        input_password = input("\n Password: ")
 
         return [input_username, input_password]
 
@@ -129,9 +155,9 @@ class Menu():
 
         print("\n\n REGISTER \n\n")
 
-        input_username = input("\n Username:")
-        input_password = input("\n Password:")
-        input_first_name = input("\n First name:")
-        input_last_name = input("\n Last name:")
+        input_username = input("\n Username: ")
+        input_password = input("\n Password: ")
+        input_first_name = input("\n First name: ")
+        input_last_name = input("\n Last name: ")
 
         return [input_username, input_password, input_first_name, input_last_name]
