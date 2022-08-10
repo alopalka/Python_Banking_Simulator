@@ -1,7 +1,9 @@
+from email.mime import base
 from money_operations.wallet import Wallet
 from secrets import values
 
 import hashlib
+import base64
 
 
 class Session():
@@ -30,7 +32,8 @@ class Authorization():
     def set_values(self):
 
         for user in self.users:
-            self.login_pass_dict.update({f'{user[1]}': user[2]})
+            bytes_password=user[2].encode()
+            self.login_pass_dict.update({f'{user[1]}': bytes_password})
 
     @staticmethod
     def hash_text(text):
@@ -43,7 +46,9 @@ class Authorization():
             100000
         )
 
-        return key
+        encoded_key = base64.b64encode(key)
+
+        return encoded_key
 
     def user_existance(self, username, password):
         key_list = list(self.login_pass_dict.keys())
@@ -90,10 +95,14 @@ class Authorization():
             session.wallet = current_wallet
             highest_user_id = int(
                 db_operator.find_newest("id", "Users")[0])+1
-            current_user = User(highest_user_id,username,password,first_name,last_name,highest_user_id)
+
+            decoded_password=password.decode()
+
+            current_user = User(highest_user_id, username,
+                                decoded_password, first_name, last_name, highest_user_id)
             current_user.create_empty(db_operator)
 
-            session.user=current_user
+            session.user = current_user
 
             session.logged_in = True
 

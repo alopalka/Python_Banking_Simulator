@@ -25,7 +25,7 @@ class Main():
         else:
             prelogin_input = self.main_menu.print_prelogin_menu()
 
-            if prelogin_input == 1:
+            if int(prelogin_input) == 1:
 
                 user_inputs = self.main_menu.login_menu()
 
