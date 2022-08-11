@@ -2,6 +2,7 @@ import platform
 import os
 
 from money_operations.transfer import Transaction
+from money_operations.exchange_rate import get_exchange_rate
 
 
 class Menu():
@@ -82,10 +83,12 @@ class Menu():
         user_amount_from = input(
             "What amount of your FROM currency do you want to exchange?: ")
 
-        calculated_amount_to_give = 0
+        calculated_exchange_rate = get_exchange_rate(
+            user_from_currency, user_to_currency)
+        money_to_recive = round(calculated_exchange_rate * float(user_amount_from),2)
 
         giving_transaction = Transaction(
-            currency=user_to_currency, wallet_from_id=session.user.wallet_id, amount=calculated_amount_to_give)
+            currency=user_to_currency, wallet_from_id=session.user.wallet_id, amount=money_to_recive)
         giving_transaction.make_transaction(
             session, db_operator, session.user.username)
 
@@ -93,7 +96,6 @@ class Menu():
             currency=user_from_currency, wallet_from_id=session.user.wallet_id, amount=user_amount_from)
         taking_transaction.make_transaction(
             session, db_operator, session.user.username)
-
 
     def logout(self, session):
         session.user = None
