@@ -56,8 +56,11 @@ class Transaction():
         sender_new_amount = getattr(
             session.wallet, selected_currency) - self.amount
 
-        db_operator.update_data_one_item(
-            "Wallets", selected_currency, sender_new_amount, "id", session.user.id)
+        if recipent_id != session.user.id:
+            sender_new_amount = getattr(
+                session.wallet, selected_currency) - self.amount
+            db_operator.update_data_one_item(
+                "Wallets", selected_currency, sender_new_amount, "id", session.user.id)
 
         refreshed_wallet = db_operator.find_match(
             "Wallets", "id", session.user.id)

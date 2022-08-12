@@ -17,4 +17,4 @@ class Wallet():
         db_operator.write_data("Wallets", cell_names, values)
 
     def __str__(self):
-        return f" USD : {self.amount_usd}\n" + f" PLN : {self.amount_pln}\n" + f" EUR : {self.amount_eur}\n" + f" BTC : {self.amount_btc}\n"
+        return f" USD : {'%.2f'%self.amount_usd}\n" + f" PLN : {'%.2f'%self.amount_pln}\n" + f" EUR : {'%.2f'%self.amount_eur}\n" + f" BTC : {'%.8f'%self.amount_btc}\n"

@@ -1,5 +1,6 @@
 import platform
 import os
+from webbrowser import get
 
 from money_operations.transfer import Transaction
 from money_operations.exchange_rate import get_exchange_rate
@@ -85,7 +86,8 @@ class Menu():
 
         calculated_exchange_rate = get_exchange_rate(
             user_from_currency, user_to_currency)
-        money_to_recive = round(calculated_exchange_rate * float(user_amount_from),2)
+        money_to_recive = float(
+            '%.8f' % calculated_exchange_rate) * float(user_amount_from)
 
         giving_transaction = Transaction(
             currency=user_to_currency, wallet_from_id=session.user.wallet_id, amount=money_to_recive)
@@ -93,7 +95,7 @@ class Menu():
             session, db_operator, session.user.username)
 
         taking_transaction = Transaction(
-            currency=user_from_currency, wallet_from_id=session.user.wallet_id, amount=user_amount_from)
+            currency=user_from_currency, wallet_from_id=session.user.wallet_id, amount=-int(user_amount_from))
         taking_transaction.make_transaction(
             session, db_operator, session.user.username)
 

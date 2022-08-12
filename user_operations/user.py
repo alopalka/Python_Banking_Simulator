@@ -32,7 +32,7 @@ class Authorization():
     def set_values(self):
 
         for user in self.users:
-            bytes_password=user[2].encode()
+            bytes_password = user[2].encode()
             self.login_pass_dict.update({f'{user[1]}': bytes_password})
 
     @staticmethod
@@ -96,7 +96,7 @@ class Authorization():
             highest_user_id = int(
                 db_operator.find_newest("id", "Users")[0])+1
 
-            decoded_password=password.decode()
+            decoded_password = password.decode()
             current_user = User(highest_user_id, username,
                                 decoded_password, first_name, last_name, highest_user_id)
             current_user.create_empty(db_operator)
