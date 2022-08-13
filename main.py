@@ -1,3 +1,4 @@
+from operator import is_
 from user_operations.user import Authorization
 from user_operations.user import User
 from user_operations.user import Session
@@ -20,26 +21,39 @@ class Main():
 
     def main_loop(self):
 
-        if self.main_session.is_logged_in():
-            self.main_menu.print_menu(self.main_session, self.db_operator)
-        else:
-            prelogin_input = self.main_menu.print_prelogin_menu()
+        is_true = True
 
-            if int(prelogin_input) == 1:
+        while(is_true):
 
-                user_inputs = self.main_menu.login_menu()
-
-                self.main_auth.login(
-                    user_inputs[0], user_inputs[1], self.main_session, self.db_operator)
+            if self.main_session.is_logged_in():
+                self.main_menu.print_menu(self.main_session, self.db_operator)
             else:
+                try:
+                    prelogin_input = self.main_menu.print_prelogin_menu()
 
-                user_inputs = self.main_menu.register_menu()
+                    if int(prelogin_input) == 1:
 
-                self.main_auth.register(
-                    user_inputs[0], user_inputs[1], user_inputs[2], user_inputs[3], self.main_session, self.db_operator
-                )
+                        user_inputs = self.main_menu.login_menu()
 
-            self.main_loop()
+                        if len(user_inputs[0])>1 or len(user_inputs[1])<1:
+                            self.main_auth.login(
+                                user_inputs[0], user_inputs[1], self.main_session, self.db_operator)
+                        else:
+                            self.main_loop()
+                        
+                    elif int(prelogin_input) == 2:
+
+                        user_inputs = self.main_menu.register_menu()
+
+                        self.main_auth.register(
+                            user_inputs[0], user_inputs[1], user_inputs[2], user_inputs[3], self.main_session, self.db_operator
+                        )
+
+                    elif int(prelogin_input) == 3:
+                        is_true=False
+
+                except KeyboardInterrupt:
+                    self.main_loop()
 
 
 if __name__ == '__main__':

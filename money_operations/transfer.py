@@ -62,8 +62,4 @@ class Transaction():
             db_operator.update_data_one_item(
                 "Wallets", selected_currency, sender_new_amount, "id", session.user.id)
 
-        refreshed_wallet = db_operator.find_match(
-            "Wallets", "id", session.user.id)
-
-        session.wallet = Wallet(
-            refreshed_wallet[0], refreshed_wallet[1], refreshed_wallet[2], refreshed_wallet[3], refreshed_wallet[4])
+        session.refresh_wallet(db_operator)

@@ -1,4 +1,4 @@
-from email.mime import base
+from money_operations.exchange_rate import get_exchange_rate
 from money_operations.wallet import Wallet
 from secrets import values
 
@@ -12,6 +12,7 @@ class Session():
         self.user = user
         self.logged_in = logged_in
         self.wallet = wallet
+        self.exchange_pairs = {}
 
     def is_logged_in(self):
 
@@ -19,6 +20,13 @@ class Session():
             return True
         else:
             return False
+
+    def refresh_wallet(self, db_operator):
+        refreshed_wallet = db_operator.find_match(
+            "Wallets", "id", self.user.id)
+
+        self.wallet = Wallet(
+            refreshed_wallet[0], refreshed_wallet[1], refreshed_wallet[2], refreshed_wallet[3], refreshed_wallet[4])
 
 
 class Authorization():

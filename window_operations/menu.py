@@ -73,9 +73,9 @@ class Menu():
         self.print_upper_section()
 
         print("\n Current prices:")
-        print("\n USD/PLN - ")
-        print("\n EUR/PLN - ")
-        print("\n BTC/PLN - ")
+        print("\n USD/PLN - "+'%.2f' % get_exchange_rate("USD", "PLN"))
+        print("\n EUR/PLN - "+'%.2f' % get_exchange_rate("EUR", "PLN"))
+        print("\n BTC/PLN - "+'%.2f' % get_exchange_rate("BTC", "PLN"))
 
         user_from_currency = input(
             "Which currency do you want to exchange? (Currency FROM): ")
@@ -95,7 +95,7 @@ class Menu():
             session, db_operator, session.user.username)
 
         taking_transaction = Transaction(
-            currency=user_from_currency, wallet_from_id=session.user.wallet_id, amount=-int(user_amount_from))
+            currency=user_from_currency, wallet_from_id=session.user.wallet_id, amount=-float(user_amount_from))
         taking_transaction.make_transaction(
             session, db_operator, session.user.username)
 
@@ -118,17 +118,22 @@ class Menu():
             print(" 2 - Exchange")
             print(" 3 - Account details")
             print(" 4 - Logout")
-            user_choice = str(input("\n Choise: "))
 
-            if user_choice == "1":
-                self.send_money(session, db_operator)
-            elif user_choice == "2":
-                self.exchange_money(session, db_operator)
-            elif user_choice == "3":
-                self.account_details(session)
-            elif user_choice == "4":
-                self.logout(session)
-                is_true = False
+            try:
+
+                user_choice = str(input("\n Choise: "))
+                if user_choice == "1":
+                    self.send_money(session, db_operator)
+                elif user_choice == "2":
+                    self.exchange_money(session, db_operator)
+                elif user_choice == "3":
+                    self.account_details(session)
+                elif user_choice == "4":
+                    self.logout(session)
+                    is_true = False
+
+            except KeyboardInterrupt:
+                pass
 
     def print_prelogin_menu(self):
 
@@ -137,6 +142,7 @@ class Menu():
         print("\n Welcome, what do you want to do?")
         print("\n 1 - Login")
         print("\n 2 - Register")
+        print("\n 3 - Exit")
 
         input_user_choice = input("\n Choice: ")
 
