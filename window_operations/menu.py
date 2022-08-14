@@ -1,6 +1,6 @@
 import platform
 import os
-from webbrowser import get
+import time
 
 from money_operations.transfer import Transaction
 from money_operations.exchange_rate import get_exchange_rate
@@ -78,26 +78,31 @@ class Menu():
         print("\n BTC/PLN - "+'%.2f' % get_exchange_rate("BTC", "PLN"))
 
         user_from_currency = input(
-            "Which currency do you want to exchange? (Currency FROM): ")
+            "\nWhich currency do you want to exchange? (Currency FROM): ")
         user_to_currency = input(
             "Currency you want to receive? (Currency TO): ")
         user_amount_from = input(
             "What amount of your FROM currency do you want to exchange?: ")
 
-        calculated_exchange_rate = get_exchange_rate(
-            user_from_currency, user_to_currency)
-        money_to_recive = float(
-            '%.8f' % calculated_exchange_rate) * float(user_amount_from)
+        if (len(user_from_currency)<4 or len(user_from_currency)>0) and (len(user_to_currency)<4 or len(user_to_currency)>0) and (type(user_amount_from) is int or type(user_amount_from) is float):
 
-        giving_transaction = Transaction(
-            currency=user_to_currency, wallet_from_id=session.user.wallet_id, amount=money_to_recive)
-        giving_transaction.make_transaction(
-            session, db_operator, session.user.username)
+            calculated_exchange_rate = get_exchange_rate(
+                user_from_currency, user_to_currency)
+            money_to_recive = float(
+                '%.8f' % calculated_exchange_rate) * float(user_amount_from)
 
-        taking_transaction = Transaction(
-            currency=user_from_currency, wallet_from_id=session.user.wallet_id, amount=-float(user_amount_from))
-        taking_transaction.make_transaction(
-            session, db_operator, session.user.username)
+            giving_transaction = Transaction(
+                currency=user_to_currency, wallet_from_id=session.user.wallet_id, amount=money_to_recive)
+            giving_transaction.make_transaction(
+                session, db_operator, session.user.username)
+
+            taking_transaction = Transaction(
+                currency=user_from_currency, wallet_from_id=session.user.wallet_id, amount=-float(user_amount_from))
+            taking_transaction.make_transaction(
+                session, db_operator, session.user.username)
+        else:
+            print("Inserted data are incorrect...")
+            time.sleep(3)
 
     def logout(self, session):
         session.user = None

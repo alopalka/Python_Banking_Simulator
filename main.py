@@ -1,4 +1,3 @@
-from operator import is_
 from user_operations.user import Authorization
 from user_operations.user import User
 from user_operations.user import Session
@@ -16,7 +15,6 @@ class Main():
         self.main_session = Session()
         self.main_menu = Menu()
         self.main_user = ""
-
         self.main_auth = Authorization(self.users)
 
     def main_loop(self):
@@ -31,17 +29,17 @@ class Main():
                 try:
                     prelogin_input = self.main_menu.print_prelogin_menu()
 
-                    if int(prelogin_input) == 1:
+                    if prelogin_input == "1":
 
                         user_inputs = self.main_menu.login_menu()
 
-                        if len(user_inputs[0])>1 or len(user_inputs[1])<1:
+                        if len(user_inputs[0]) > 1 or len(user_inputs[1]) < 1:
                             self.main_auth.login(
                                 user_inputs[0], user_inputs[1], self.main_session, self.db_operator)
                         else:
                             self.main_loop()
-                        
-                    elif int(prelogin_input) == 2:
+
+                    elif prelogin_input == "2":
 
                         user_inputs = self.main_menu.register_menu()
 
@@ -49,8 +47,8 @@ class Main():
                             user_inputs[0], user_inputs[1], user_inputs[2], user_inputs[3], self.main_session, self.db_operator
                         )
 
-                    elif int(prelogin_input) == 3:
-                        is_true=False
+                    else:
+                        is_true = False
 
                 except KeyboardInterrupt:
                     self.main_loop()
