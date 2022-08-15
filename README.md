@@ -29,7 +29,7 @@ Project don't have GUI. Everything happens in terminal window.
 
 ## Instalation
 
-Run ```pip install requirements.txt```
+Run ```pip install -r requirements.txt```
 
 And you should be ready to go
 
