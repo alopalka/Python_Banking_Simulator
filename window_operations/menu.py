@@ -35,7 +35,7 @@ class Menu():
     def clear_window():
         os_type = platform.system()
 
-        if os_type == "Linux":
+        if os_type == "Linux" or os_type == "Darwin":
             os.system('clear')
         else:
             os.system('cls')
