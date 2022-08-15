@@ -23,7 +23,7 @@ class Session():
 
     def refresh_wallet(self, db_operator):
         refreshed_wallet = db_operator.find_match(
-            "Wallets", "id", self.user.id)
+            "Wallets", "id", self.user.wallet_id)
 
         self.wallet = Wallet(
             refreshed_wallet[0], refreshed_wallet[1], refreshed_wallet[2], refreshed_wallet[3], refreshed_wallet[4])

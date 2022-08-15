@@ -1,5 +1,6 @@
-bank_db.*
-bank_dbn
+bank_db.db.sqbpro
+bank_db.sqbpro
+
 secrets.py
 
 # Byte-compiled / optimized / DLL files
