@@ -43,6 +43,7 @@ class Authorization():
             bytes_password = user[2].encode()
             self.login_pass_dict.update({f'{user[1]}': bytes_password})
 
+
     @staticmethod
     def hash_text(text):
         salt = values.get("salt")
@@ -59,31 +60,32 @@ class Authorization():
         return encoded_key
 
     def user_existance(self, username, password):
-        key_list = list(self.login_pass_dict.keys())
-        values_list = list(self.login_pass_dict.values())
-
         try:
-            user_index = key_list.index(username)
-            password_index = values_list.index(password)
+            user_password = self.login_pass_dict[username]
 
-            if user_index == password_index:
-                return user_index
+            if user_password == password:
+                return True
             else:
                 return False
         except:
             return False
+
+    def search_user_index(self,username):
+        for user in self.users:
+            if username == user[1]:
+                return int(user[0])
 
     def login(self, username, password, session, db_operator):
         password = self.hash_text(password)
         result = self.user_existance(username, password)
 
         if result is not False:
-            session.logged_in = True
-            exact_user = self.users[result]
-            session.user = User(
-                exact_user[0], exact_user[1], exact_user[2], exact_user[3], exact_user[4], exact_user[5])
+            exact_user = self.users[self.search_user_index(username)]
             wallet_id = exact_user[5]
             wallet = db_operator.find_match("Wallets", "id", wallet_id)
+            session.logged_in = True
+            session.user = User(
+                exact_user[0], exact_user[1], exact_user[2], exact_user[3], exact_user[4], exact_user[5])
             session.wallet = Wallet(
                 wallet[0], wallet[1], wallet[2], wallet[3], wallet[4])
 
