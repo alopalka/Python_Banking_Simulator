@@ -27,6 +27,10 @@ Project don't have GUI. Everything happens in terminal window.
 
 - Users can register, login and logout 
 
+## Instalation
+
+No need of instaling external libraries. Download and run. API GET to ```polygon.io``` doesn't require api key. Salt for password's generation is public.
+
 ## Screenshots
 
 ![scr1!](screenshots/scr1.png)

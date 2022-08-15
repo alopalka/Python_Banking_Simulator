@@ -1,4 +1,3 @@
-from money_operations.exchange_rate import get_exchange_rate
 from money_operations.wallet import Wallet
 from secrets import values
 
