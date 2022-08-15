@@ -1,5 +1,6 @@
 bank_db.db.sqbpro
 bank_db.sqbpro
+bank_db.db-journal
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

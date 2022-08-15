@@ -60,7 +60,7 @@ class Menu():
 
         user_currency = input("Which currency do you choose? (Currency)")
         user_amount = float(
-            input("How much do you want to transfer? (Amount)").replace(',','.'))
+            input("How much do you want to transfer? (Amount)").replace(',', '.'))
         user_recipient = input("Recipient username: ")
 
         possible_currencies = ['usd', 'pln', 'btc', 'eur']
@@ -70,16 +70,17 @@ class Menu():
             and user_currency.isalpha()
             and user_currency.lower() in possible_currencies
         ):
-            current_transaction = Transaction(
-                currency=user_currency, wallet_from_id=session.user.wallet_id, amount=user_amount)
-
-            current_transaction.make_transaction(
-                session, db_operator, user_recipient)
 
             taking_transaction = Transaction(
                 currency=user_currency, wallet_from_id=session.user.wallet_id, amount=-user_amount)
-            taking_transaction.make_transaction(
+            transaction_outcome = taking_transaction.make_transaction(
                 session, db_operator, session.user.username)
+
+            if transaction_outcome:
+                current_transaction = Transaction(
+                    currency=user_currency, wallet_from_id=session.user.wallet_id, amount=user_amount)
+                current_transaction.make_transaction(
+                    session, db_operator, user_recipient)
 
         else:
             self.print_incorrect_screen()
@@ -109,7 +110,7 @@ class Menu():
         user_to_currency = input(
             "Currency you want to receive? (Currency TO): ")
         user_amount_from = float(input(
-            "What amount of your FROM currency do you want to exchange?: ").replace(',','.'))
+            "What amount of your FROM currency do you want to exchange?: ").replace(',', '.'))
 
         if (
             (len(user_from_currency) < 4 or len(user_from_currency) > 0)
@@ -124,15 +125,17 @@ class Menu():
             money_to_recive = float(
                 '%.8f' % calculated_exchange_rate) * user_amount_from
 
-            giving_transaction = Transaction(
-                currency=user_to_currency, wallet_from_id=session.user.wallet_id, amount=money_to_recive)
-            giving_transaction.make_transaction(
-                session, db_operator, session.user.username)
-
             taking_transaction = Transaction(
                 currency=user_from_currency, wallet_from_id=session.user.wallet_id, amount=-user_amount_from)
-            taking_transaction.make_transaction(
+            transaction_outcome = taking_transaction.make_transaction(
                 session, db_operator, session.user.username)
+
+            if transaction_outcome:
+                giving_transaction = Transaction(
+                    currency=user_to_currency, wallet_from_id=session.user.wallet_id, amount=money_to_recive)
+                giving_transaction.make_transaction(
+                    session, db_operator, session.user.username)
+
         else:
             self.print_incorrect_screen()
 

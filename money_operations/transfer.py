@@ -30,8 +30,9 @@ class Transaction():
         sender_amount_before = getattr(
             session.wallet, selected_currency)
 
-        if sender_amount_before < self.amount:
-            return False
+        if self.amount<0:
+            if abs(self.amount)>sender_amount_before:
+                return False
 
         return True
 
@@ -76,12 +77,6 @@ class Transaction():
         db_operator.update_data_one_item(
             "Wallets", selected_currency, recipent_new_amount, "id", recipent_id)
 
-        if recipent_id != session.user.id:
-
-            sender_amount_before = getattr(
-                session.wallet, selected_currency)
-            sender_new_amount = sender_amount_before - self.amount
-            db_operator.update_data_one_item(
-                "Wallets", selected_currency, sender_new_amount, "id", session.user.id)
-
         session.refresh_wallet(db_operator)
+
+        return True

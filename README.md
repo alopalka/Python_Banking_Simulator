@@ -29,7 +29,16 @@ Project don't have GUI. Everything happens in terminal window.
 
 ## Instalation
 
-No need of instaling external libraries. Download and run. API GET to ```polygon.io``` doesn't require api key. Salt for password's generation is public.
+Run ```pip install requirements.txt```
+
+And you should be ready to go
+
+#### Example user:
+
+- Login: ```user1```
+- Password: ```password1```
+
+API GET to ```polygon.io``` doesn't require api key. Salt for password's generation is public.
 
 ## Screenshots
 
