@@ -1,3 +1,5 @@
+import time
+
 
 class Transaction():
 
@@ -15,11 +17,7 @@ class Transaction():
 
         return highest_transaction_id
 
-    def is_possible(self,session,db_operator,recipient_username):
-        # TODO
-        # check recipent_username
-        # check amount
-        # check currency
+    def is_possible(self, session, db_operator, recipient_username):
 
         user_in_db = db_operator.find_match(
             "Users", "username", recipient_username)
@@ -27,27 +25,30 @@ class Transaction():
         if user_in_db == None:
             return False
 
+        selected_currency = f"amount_{self.currency.lower()}"
 
+        sender_amount_before = getattr(
+            session.wallet, selected_currency)
 
+        if sender_amount_before < self.amount:
+            return False
+
+        return True
 
     def make_transaction(self, session, db_operator, recipient_username):
 
-        self.is_possible(session,db_operator,recipient_username)
+        posibility_bool = self.is_possible(
+            session, db_operator, recipient_username)
+
+        if not posibility_bool:
+            print("\n Inserted data are incorrect...")
+            time.sleep(3)
+            return False
 
         highest_transaction_id = self.find_newest_transaction(db_operator)
         recipent_user = db_operator.find_match(
             "Users", "username", recipient_username)
         recipent_id = recipent_user[5]
-
-        recipent_wallet = db_operator.find_match("Wallets", "id", recipent_id)
-        recipent_amount_before = recipent_wallet[int(wallet_cell_id)]
-        recipent_new_amount = recipent_amount_before + float(self.amount)
-
-        cell_names = ['id', 'currency',
-                      'wallet_from_id', 'wallet_to_id', 'amount']
-
-        values = [highest_transaction_id+1, self.currency, self.wallet_from_id,
-                  recipent_id, self.amount]
 
         selected_currency = f"amount_{self.currency.lower()}"
 
@@ -59,6 +60,16 @@ class Transaction():
             wallet_cell_id = "3"
         elif selected_currency == "amount_btc":
             wallet_cell_id = "4"
+
+        recipent_wallet = db_operator.find_match("Wallets", "id", recipent_id)
+        recipent_amount_before = recipent_wallet[int(wallet_cell_id)]
+        recipent_new_amount = recipent_amount_before + float(self.amount)
+
+        cell_names = ['id', 'currency',
+                      'wallet_from_id', 'wallet_to_id', 'amount']
+
+        values = [highest_transaction_id+1, self.currency, self.wallet_from_id,
+                  recipent_id, self.amount]
 
         db_operator.write_data("Transactions", cell_names, values)
 

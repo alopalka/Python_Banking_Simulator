@@ -46,18 +46,43 @@ class Menu():
         print(self.logo)
         print("\n\n")
 
+    def print_incorrect_screen(self):
+        self.clear_window()
+        print("\n\n\n")
+        print("\n There was a problem ")
+        print("\n Incorrect data...")
+        time.sleep(1)
+        print("\n Please try again...")
+        time.sleep(2)
+
     def send_money(self, session, db_operator):
         self.print_upper_section()
 
         user_currency = input("Which currency do you choose? (Currency)")
-        user_amount = input("How much do you want to transfer? (Amount)")
+        user_amount = float(
+            input("How much do you want to transfer? (Amount)").replace(',','.'))
         user_recipient = input("Recipient username: ")
 
-        current_transaction = Transaction(
-            currency=user_currency, wallet_from_id=session.user.wallet_id, amount=user_amount)
+        possible_currencies = ['usd', 'pln', 'btc', 'eur']
 
-        current_transaction.make_transaction(
-            session, db_operator, user_recipient)
+        if(
+            (len(user_currency) < 4 or len(user_currency) > 0)
+            and user_currency.isalpha()
+            and user_currency.lower() in possible_currencies
+        ):
+            current_transaction = Transaction(
+                currency=user_currency, wallet_from_id=session.user.wallet_id, amount=user_amount)
+
+            current_transaction.make_transaction(
+                session, db_operator, user_recipient)
+
+            taking_transaction = Transaction(
+                currency=user_currency, wallet_from_id=session.user.wallet_id, amount=-user_amount)
+            taking_transaction.make_transaction(
+                session, db_operator, session.user.username)
+
+        else:
+            self.print_incorrect_screen()
 
     def account_details(self, session):
         self.print_upper_section()
@@ -77,19 +102,27 @@ class Menu():
         print("\n EUR/PLN - "+'%.2f' % get_exchange_rate("EUR", "PLN"))
         print("\n BTC/PLN - "+'%.2f' % get_exchange_rate("BTC", "PLN"))
 
+        possible_currencies = ['usd', 'pln', 'btc', 'eur']
+
         user_from_currency = input(
             "\nWhich currency do you want to exchange? (Currency FROM): ")
         user_to_currency = input(
             "Currency you want to receive? (Currency TO): ")
-        user_amount_from = input(
-            "What amount of your FROM currency do you want to exchange?: ")
+        user_amount_from = float(input(
+            "What amount of your FROM currency do you want to exchange?: ").replace(',','.'))
 
-        if (len(user_from_currency)<4 or len(user_from_currency)>0) and (len(user_to_currency)<4 or len(user_to_currency)>0) and (type(user_amount_from) is int or type(user_amount_from) is float):
+        if (
+            (len(user_from_currency) < 4 or len(user_from_currency) > 0)
+            and (len(user_to_currency) < 4 or len(user_to_currency) > 0)
+            and (user_from_currency.isalpha() and user_to_currency.isalpha())
+            and (user_from_currency.lower() in possible_currencies)
+            and (user_to_currency.lower() in possible_currencies)
+        ):
 
             calculated_exchange_rate = get_exchange_rate(
                 user_from_currency, user_to_currency)
             money_to_recive = float(
-                '%.8f' % calculated_exchange_rate) * float(user_amount_from)
+                '%.8f' % calculated_exchange_rate) * user_amount_from
 
             giving_transaction = Transaction(
                 currency=user_to_currency, wallet_from_id=session.user.wallet_id, amount=money_to_recive)
@@ -97,12 +130,11 @@ class Menu():
                 session, db_operator, session.user.username)
 
             taking_transaction = Transaction(
-                currency=user_from_currency, wallet_from_id=session.user.wallet_id, amount=-float(user_amount_from))
+                currency=user_from_currency, wallet_from_id=session.user.wallet_id, amount=-user_amount_from)
             taking_transaction.make_transaction(
                 session, db_operator, session.user.username)
         else:
-            print("Inserted data are incorrect...")
-            time.sleep(3)
+            self.print_incorrect_screen()
 
     def logout(self, session):
         session.user = None
@@ -125,7 +157,6 @@ class Menu():
             print(" 4 - Logout")
 
             try:
-
                 user_choice = str(input("\n Choise: "))
                 if user_choice == "1":
                     self.send_money(session, db_operator)
