@@ -17,7 +17,7 @@ class Main():
         self.main_user = ""
         self.main_auth = Authorization(self.users)
 
-    def main_loop(self):
+    def main_loop(self) -> None:
 
         is_true = True
 

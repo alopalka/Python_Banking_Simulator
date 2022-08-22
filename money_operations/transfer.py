@@ -10,14 +10,14 @@ class Transaction():
         self.wallet_to_id = wallet_to_id
         self.amount = float(amount)
 
-    def find_newest_transaction(self, db_operator):
+    def find_newest_transaction(self, db_operator) -> int:
 
         highest_transaction_id = db_operator.find_newest(
             cell_name="id", table_name="Transactions")[0]
 
-        return highest_transaction_id
+        return int(highest_transaction_id)
 
-    def is_possible(self, session, db_operator, recipient_username):
+    def is_possible(self, session, db_operator, recipient_username: str) -> bool:
 
         user_in_db = db_operator.find_match(
             "Users", "username", recipient_username)
@@ -30,13 +30,13 @@ class Transaction():
         sender_amount_before = getattr(
             session.wallet, selected_currency)
 
-        if self.amount<0:
-            if abs(self.amount)>sender_amount_before:
+        if self.amount < 0:
+            if abs(self.amount) > sender_amount_before:
                 return False
 
         return True
 
-    def make_transaction(self, session, db_operator, recipient_username):
+    def make_transaction(self, session, db_operator, recipient_username: str) -> bool:
 
         posibility_bool = self.is_possible(
             session, db_operator, recipient_username)

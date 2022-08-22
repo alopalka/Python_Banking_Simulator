@@ -7,20 +7,20 @@ import base64
 
 class Session():
 
-    def __init__(self, user=None, logged_in=False, wallet=None):
+    def __init__(self, user=None, logged_in=False, wallet=None) -> None:
         self.user = user
         self.logged_in = logged_in
         self.wallet = wallet
         self.exchange_pairs = {}
 
-    def is_logged_in(self):
+    def is_logged_in(self) -> bool:
 
         if self.logged_in:
             return True
         else:
             return False
 
-    def refresh_wallet(self, db_operator):
+    def refresh_wallet(self, db_operator) -> None:
         refreshed_wallet = db_operator.find_match(
             "Wallets", "id", self.user.wallet_id)
 
@@ -30,21 +30,20 @@ class Session():
 
 class Authorization():
 
-    def __init__(self, users):
+    def __init__(self, users) -> None:
         self.users = users
         self.login_pass_dict = {}
 
         self.set_values()
 
-    def set_values(self):
+    def set_values(self) -> None:
 
         for user in self.users:
             bytes_password = user[2].encode()
             self.login_pass_dict.update({f'{user[1]}': bytes_password})
 
-
     @staticmethod
-    def hash_text(text):
+    def hash_text(text) -> bytes:
         salt = values.get("salt")
 
         key = hashlib.pbkdf2_hmac(
@@ -58,7 +57,7 @@ class Authorization():
 
         return encoded_key
 
-    def user_existance(self, username, password):
+    def user_existance(self, username: str, password: str) -> bool:
         try:
             user_password = self.login_pass_dict[username]
 
@@ -69,12 +68,12 @@ class Authorization():
         except:
             return False
 
-    def search_user_index(self,username):
+    def search_user_index(self, username: str) -> int:
         for user in self.users:
             if username == user[1]:
                 return int(user[0])
 
-    def login(self, username, password, session, db_operator):
+    def login(self, username: str, password: str, session, db_operator):
         password = self.hash_text(password)
         result = self.user_existance(username, password)
 
@@ -91,7 +90,7 @@ class Authorization():
         else:
             return False
 
-    def register(self, username, password, first_name, last_name, session, db_operator):
+    def register(self, username: str, password: str, first_name: str, last_name: str, session, db_operator):
         password = self.hash_text(password)
         result = self.user_existance(username, password)
 
@@ -120,7 +119,7 @@ class Authorization():
 
 class User():
 
-    def __init__(self, id, username, password, first_name, last_name, wallet_id):
+    def __init__(self, id, username, password, first_name, last_name, wallet_id) -> None:
         self.id = id
         self.username = username
         self.password = password
@@ -128,7 +127,7 @@ class User():
         self.last_name = last_name
         self.wallet_id = wallet_id
 
-    def create_empty(self, db_operator):
+    def create_empty(self, db_operator) -> None:
 
         cell_names = ['id', 'username', 'password',
                       'first_name', 'last_name', 'wallet_key']

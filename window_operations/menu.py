@@ -32,7 +32,7 @@ class Menu():
                           ^^J55YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY55?^^"""
 
     @staticmethod
-    def clear_window():
+    def clear_window() -> None:
         os_type = platform.system()
 
         if os_type == "Linux" or os_type == "Darwin":
@@ -40,13 +40,13 @@ class Menu():
         else:
             os.system('cls')
 
-    def print_upper_section(self):
+    def print_upper_section(self) -> None:
         self.clear_window()
 
         print(self.logo)
         print("\n\n")
 
-    def print_incorrect_screen(self):
+    def print_incorrect_screen(self) -> None:
         self.clear_window()
         print("\n\n\n")
         print("\n There was a problem ")
@@ -55,7 +55,7 @@ class Menu():
         print("\n Please try again...")
         time.sleep(2)
 
-    def send_money(self, session, db_operator):
+    def send_money(self, session, db_operator) -> None:
         self.print_upper_section()
 
         user_currency = input("Which currency do you choose? (Currency)")
@@ -85,7 +85,7 @@ class Menu():
         else:
             self.print_incorrect_screen()
 
-    def account_details(self, session):
+    def account_details(self, session) -> None:
         self.print_upper_section()
 
         print(session.user)
@@ -94,7 +94,7 @@ class Menu():
 
         input("\n Press any key to continue...")
 
-    def exchange_money(self, session, db_operator):
+    def exchange_money(self, session, db_operator) -> None:
 
         self.print_upper_section()
 
@@ -139,12 +139,12 @@ class Menu():
         else:
             self.print_incorrect_screen()
 
-    def logout(self, session):
+    def logout(self, session) -> None:
         session.user = None
         session.logged_in = False
         session.wallet = None
 
-    def print_menu(self, session, db_operator):
+    def print_menu(self, session, db_operator) -> None:
 
         is_true = True
 
@@ -187,7 +187,7 @@ class Menu():
 
         return input_user_choice
 
-    def login_menu(self):
+    def login_menu(self) -> list:
 
         self.print_upper_section()
 
@@ -198,7 +198,7 @@ class Menu():
 
         return [input_username, input_password]
 
-    def register_menu(self):
+    def register_menu(self) -> list:
 
         self.print_upper_section()
 
